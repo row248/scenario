@@ -1,0 +1,41 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>Сообщения</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+    <?php drawNavBar() ?>
+    <table class="table table-condensed msg-table">
+        <thead>
+            <tbody>
+                <tr>
+                    <td>#</td>
+                    <td>email</td>
+                    <td>message</td>
+                    <td>phones</td>
+                    <td>links</td>
+                </tr>
+            </tbody>
+        </thead>
+        <?php
+        while ( $row = $sth->fetch() ) { ?>
+            <tr>
+                <td><?php echo empty($row['name'])? "—": $row['name'] ?> </td>
+                <td><?php echo $row['email'] ?> </td>
+                <td><?php echo $row['message'] ?> </td>
+                <td><?php echo empty($row['phones'])? "—": $row['phones'] ?> </td>
+                <td><?php echo empty($row['links'])? "—": $row['links'] ?> </td>
+                <td>
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                    <input type="hidden" name="csrf_token" value="<? echo getToken() ?>">
+                    <input type="hidden" name="id" value="<?= $row['id']; ?>">
+                    <input type="submit" name="delete" value="Удалить" class="submit-delete">
+                </form>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>
+</body>
+</html>
